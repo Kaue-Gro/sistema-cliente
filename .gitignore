@@ -1,0 +1,31 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# Maven
+**/target/
+
+# Gradle
+.gradle/
+build/
+
+# Java
+*.class
+hs_err_pid*
+
+# Logs
+*.log
+logs/
+
+# Arquivos temporários
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+
+# Variáveis de ambiente
+.env
+.env.*
+!.env.example
