@@ -48,4 +48,22 @@ public class ClienteService {
         }
         clienteRepository.deleteById(id);
         }
+        public Cliente atualizarPatch (Long id, Cliente dadosParciais) {
+        Cliente clienteExistente = clienteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado com o ID: " + id));
+            if (dadosParciais.getNome() != null && !dadosParciais.getNome().isBlank()) {
+                clienteExistente.setNome(dadosParciais.getNome());
+            }
+            if (dadosParciais.getEmail() != null && !dadosParciais.getEmail().isBlank()) {
+                if (!clienteExistente.getEmail().equals(dadosParciais.getEmail()) && clienteRepository.existsByEmail(dadosParciais.getEmail())) {
+                    throw new IllegalArgumentException("Email já em uso!!");
+
+            }
+                clienteExistente.setEmail(dadosParciais.getEmail());
+            }
+            if (dadosParciais.getTelefone() != null && !dadosParciais.getTelefone().isBlank()) {
+                clienteExistente.setTelefone(dadosParciais.getTelefone());
+            }
+
+        }
 }
