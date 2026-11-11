@@ -20,6 +20,9 @@ public class ClienteService {
         if (clienteRepository.existsByEmail(cliente.getEmail())) {
             throw new IllegalArgumentException("Ja existe um cliente cadastrado com esse Email");
         }
+        if (cliente.getTelefone() != null && clienteRepository.existsByTelefone(cliente.getTelefone())) {
+            throw new IllegalArgumentException("Já existe um cliente cadastrado com esse telefone");
+        }
         return clienteRepository.save(cliente);
     }
          public List<Cliente> listartodos() {
@@ -62,8 +65,15 @@ public class ClienteService {
                 clienteExistente.setEmail(dadosParciais.getEmail());
             }
             if (dadosParciais.getTelefone() != null && !dadosParciais.getTelefone().isBlank()) {
+                boolean telefoneJaExiste = clienteRepository.existsByTelefone(dadosParciais.getTelefone());
+                boolean telefoneDiferentedoAtual = !dadosParciais.getTelefone().equals(clienteExistente.getTelefone());
+                if (telefoneDiferentedoAtual && telefoneJaExiste) {
+                    throw new IllegalArgumentException("Telefone em Uso");
+                }
                 clienteExistente.setTelefone(dadosParciais.getTelefone());
             }
+            return clienteRepository.save(clienteExistente);
+
 
         }
 }
