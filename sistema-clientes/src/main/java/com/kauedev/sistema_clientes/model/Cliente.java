@@ -12,17 +12,14 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O nome é obrigatório")
-    @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres")
+
     @Column(nullable = false, length = 100)
     private String nome;
 
-    @NotBlank(message = "O Email é obrigatorio")
-    @Email(message = "informe um Email valido!")
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 150)
     private String email;
 
-    @Column(name = "telefone",length = 20, unique = true)
+    @Column(length = 20)
     private String telefone;
 
     public Cliente() {
