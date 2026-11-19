@@ -1,6 +1,8 @@
 package com.kauedev.sistema_clientes.controller;
 
 
+import com.kauedev.sistema_clientes.dto.ClienteRequestDTO;
+import com.kauedev.sistema_clientes.dto.ClienteResponseDTO;
 import com.kauedev.sistema_clientes.model.Cliente;
 import com.kauedev.sistema_clientes.service.ClienteService;
 import jakarta.validation.Valid;
@@ -21,28 +23,39 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> salvar (@Valid @RequestBody Cliente cliente) {
-        Cliente clientesalvo = clienteService.salvar(cliente);
+    public ResponseEntity<ClienteResponseDTO> salvar (@Valid @RequestBody ClienteRequestDTO dto) {
+        ClienteResponseDTO clientesalvo = clienteService.salvar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(clientesalvo);
     }
+
     @GetMapping
-    public ResponseEntity<List<Cliente>> listarTodos () {
+    public ResponseEntity<List<ClienteResponseDTO>> listarTodos () {
         return ResponseEntity.ok(clienteService.listartodos());
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> buscarPorId (@PathVariable Long id){
+    public ResponseEntity<ClienteResponseDTO> buscarPorId (@PathVariable Long id){
         return clienteService.buscarPorId(id)
                 .map(cliente -> ResponseEntity.ok(cliente))
         .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> atualizar (@PathVariable Long id, @Valid @RequestBody Cliente dadosnovos) {
-        Cliente clienteAtualizado = clienteService.atualizar(id, dadosnovos);
+    public ResponseEntity<ClienteResponseDTO> atualizar (@PathVariable Long id, @Valid @RequestBody ClienteRequestDTO dadosnovos) {
+        ClienteResponseDTO clienteAtualizado = clienteService.atualizar(id, dadosnovos);
         return ResponseEntity.ok(clienteAtualizado);
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ClienteResponseDTO> atualizarparcial (@PathVariable Long id, @RequestBody ClienteRequestDTO dadosParciais) {
+        ClienteResponseDTO clienteAtualizado = clienteService.atualizarPatch(id, dadosParciais);
+        return ResponseEntity.ok(clienteAtualizado);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         clienteService.deletar(id);
         return ResponseEntity.noContent().build();
     }
+
 }
